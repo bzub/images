@@ -15,11 +15,16 @@ group "default" {
   targets = ["base"]
 }
 
+target "docker-metadata-action" {}
+
 target "base" {
+  inherits = ["docker-metadata-action"]
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/base:${TAG}",
   ]
   args = {
+    ALPINE_IMAGE = ALPINE_IMAGE
+    BUILDX_IMAGE = BUILDX_IMAGE
     DOCKER_IMAGE = DOCKER_IMAGE
   }
 }

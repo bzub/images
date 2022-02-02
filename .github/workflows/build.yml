@@ -1,0 +1,59 @@
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - 'main'
+
+env:
+  REPO_SLUG: "bzub/images"
+  REGISTRY: "ghcr.io"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.REPO_SLUG }}/base
+      -
+        name: Build and push image
+        uses: docker/bake-action@v1
+        with:
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.meta.outputs.bake-file }}
+          push: ${{ github.event_name != 'pull_request' }}
+      # -
+      #   name: Build images
+      #   run: |
+      #     docker buildx bake \
+      #       --set '*.cache-from=type=registry,ref=ghcr.io/bzub/images/cache:buildcache' \
+      #       --set '*.cache-to=type=registry,ref=ghcr.io/bzub/images/cache:buildcache,mode=max'
+      #       # --set '*.cache-from=type=gha,scope=main-cache' \
+      #       # --set '*.cache-to=type=gha,scope=main-cache,mode=max'
