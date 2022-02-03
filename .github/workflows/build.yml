@@ -41,7 +41,6 @@ jobs:
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.REPO_SLUG }}/base
-          # bake-target: meta-helper
       -
         name: Build and push image
         uses: docker/bake-action@v1
@@ -49,7 +48,6 @@ jobs:
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
-          # targets: image-cross
           push: ${{ github.event_name != 'pull_request' }}
       # -
       #   name: Build images
