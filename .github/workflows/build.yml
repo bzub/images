@@ -26,6 +26,5 @@ jobs:
         name: Build images
         run: |
           docker buildx bake \
-            --progress plain \
             --set '*.cache-from=type=gha,scope=default' \
             --set '*.cache-to=type=gha,scope=default'
