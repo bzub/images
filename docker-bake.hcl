@@ -20,6 +20,8 @@ target "base" {
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/base:${TAG}",
   ]
   args = {
+    ALPINE_IMAGE = ALPINE_IMAGE
+    BUILDX_IMAGE = BUILDX_IMAGE
     DOCKER_IMAGE = DOCKER_IMAGE
   }
 }
