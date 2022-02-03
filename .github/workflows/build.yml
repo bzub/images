@@ -28,5 +28,4 @@ jobs:
           docker buildx bake \
             --progress plain \
             --set '*.cache-from=type=gha' \
-            --set '*.cache-to=type=gha' \
-            --set '*.output=type=cacheonly'
+            --set '*.cache-to=type=gha'
