@@ -27,6 +27,5 @@ jobs:
         run: |
           docker buildx bake \
             --progress plain \
-            --load \
-            --set '*.cache-from=type=gha' \
-            --set '*.cache-to=type=gha'
+            --set '*.cache-from=type=gha,scope=default' \
+            --set '*.cache-to=type=gha,scope=default'
