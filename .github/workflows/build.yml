@@ -42,13 +42,27 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ env.REPO_SLUG }}/base
       -
-        name: Build and push image
+        name: Build and push image (PR)
+        uses: docker/bake-action@v1
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          TAG: ${{ github.head_ref }}
+        with:
+          files: |
+            ./docker-bake.hcl
+            ${{ steps.meta.outputs.bake-file }}
+          push: true
+      -
+        name: Build and push image (non-PR)
+        if: ${{ github.event_name == 'push' || github.event_name == 'release' }}
+        env:
+          TAG: ${{ github.ref_name }}
         uses: docker/bake-action@v1
         with:
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
       # -
       #   name: Build images
       #   run: |
