@@ -26,5 +26,7 @@ jobs:
         name: Build images
         run: |
           docker buildx bake \
-            --set '*.cache-from=type=gha,scope=main-cache' \
-            --set '*.cache-to=type=gha,scope=main-cache,mode=max'
+            --set '*.cache-from=type=registry,ref=ghcr.io/bzub/images:buildcache' \
+            --set '*.cache-to=type=registry,ref=ghcr.io/bzub/images:buildcache,mode=max'
+            # --set '*.cache-from=type=gha,scope=main-cache' \
+            # --set '*.cache-to=type=gha,scope=main-cache,mode=max'
