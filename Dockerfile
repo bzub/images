@@ -8,6 +8,6 @@ FROM $DOCKER_IMAGE as docker-bin
 FROM $BUILDX_IMAGE as buildx-bin
 
 FROM $ALPINE_IMAGE as base
-RUN apk add -U --no-cache git curl build-base bash
+RUN apk add -U --no-cache git curl bash shadow
 COPY --from=docker-bin /usr/local/bin/docker /usr/local/bin/ctr /usr/local/bin/
 COPY --from=buildx-bin /buildx /usr/libexec/docker/cli-plugins/docker-buildx
