@@ -35,13 +35,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: |
-            ${{ env.REGISTRY }}/${{ env.REPO_SLUG }}/base
-      -
         name: Build and push image
         uses: docker/bake-action@v1
         with:
@@ -49,13 +42,3 @@ jobs:
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
           push: ${{ github.event_name == 'push' || github.event_name == 'release' }}
-          set: |
-            *.tags=${{ steps.meta.outputs.tags }}
-      # -
-      #   name: Build images
-      #   run: |
-      #     docker buildx bake \
-      #       --set '*.cache-from=type=registry,ref=ghcr.io/bzub/images/cache:buildcache' \
-      #       --set '*.cache-to=type=registry,ref=ghcr.io/bzub/images/cache:buildcache,mode=max'
-      #       # --set '*.cache-from=type=gha,scope=main-cache' \
-      #       # --set '*.cache-to=type=gha,scope=main-cache,mode=max'
