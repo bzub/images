@@ -5,10 +5,10 @@ variable "REPO_NAME" {default = "images"}
 variable "ALPINE_VERSION" {default = "3.15.0"}
 variable "KPT_VERSION" {default = "v1.0.0-beta.13"}
 variable "KIND_VERSION" {default = "v0.11.1"}
-variable "CAPI_V0_3_VERSION" {default = "v0.3.24"}
-variable "CAPI_V0_4_VERSION" {default = "v0.4.5"}
-variable "CAPI_V1_0_VERSION" {default = "v1.0.2"}
-variable "CAPI_V1_1_VERSION" {default = "v1.1.1"}
+variable "CAPI_V0_3_VERSION" {default = "v0.3.25"}
+variable "CAPI_V0_4_VERSION" {default = "v0.4.7"}
+variable "CAPI_V1_0_VERSION" {default = "v1.0.4"}
+variable "CAPI_V1_1_VERSION" {default = "v1.1.2"}
 
 variable "ALPINE_IMAGE" {default = "docker.io/library/alpine:${ALPINE_VERSION}"}
 variable "KPT_IMAGE" {default = "ghcr.io/bzub/images/kpt:${KPT_VERSION}"}
