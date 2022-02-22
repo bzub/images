@@ -44,6 +44,7 @@ target "_common" {
 
 target "kpt" {
   inherits = ["_common"]
+  target = "kpt"
   args = {
     KPT_VERSION = KPT_VERSION
   }
@@ -54,6 +55,7 @@ target "kpt" {
 
 target "kind" {
   inherits = ["_common"]
+  target = "kind"
   args = {
     KIND_VERSION = KIND_VERSION
   }
