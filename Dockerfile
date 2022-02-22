@@ -33,7 +33,7 @@ RUN chmod +x /usr/local/bin/kpt-${GOOS}-${GOARCH}
 
 FROM base-image as kpt
 COPY --from=kpt-build /usr/local/bin/kpt-${TARGETOS}-${TARGETARCH} /kpt
-ENTRYPOINT /kpt
+ENTRYPOINT ["/kpt"]
 
 FROM builder as kind-build
 ARG KIND_VERSION
@@ -51,7 +51,7 @@ RUN chmod +x /usr/local/bin/kind-${GOOS}-${GOARCH}
 
 FROM base-image as kind
 COPY --from=kind-build /usr/local/bin/kind-${TARGETOS}-${TARGETARCH} /kind
-ENTRYPOINT /kind
+ENTRYPOINT ["/kind"]
 
 FROM builder as clusterctl-build
 ARG CLUSTERCTL_VERSION
@@ -69,4 +69,4 @@ RUN chmod +x /usr/local/bin/clusterctl-${GOOS}-${GOARCH}
 
 FROM base-image as clusterctl
 COPY --from=clusterctl-build /usr/local/bin/clusterctl-${TARGETOS}-${TARGETARCH} /clusterctl
-ENTRYPOINT /clusterctl
+ENTRYPOINT ["/clusterctl"]
