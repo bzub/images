@@ -26,10 +26,7 @@ group "default" {
   ]
 }
 
-target "docker-metadata-action" {}
-
 target "_common" {
-  inherits = ["docker-metadata-action"]
   args = {
     ALPINE_IMAGE = ALPINE_IMAGE
     REGISTRY = REGISTRY
