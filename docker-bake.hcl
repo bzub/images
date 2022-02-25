@@ -9,6 +9,10 @@ variable "CAPI_V0_3_VERSION" {default = "v0.3.25"}
 variable "CAPI_V0_4_VERSION" {default = "v0.4.7"}
 variable "CAPI_V1_0_VERSION" {default = "v1.0.4"}
 variable "CAPI_V1_1_VERSION" {default = "v1.1.2"}
+variable "K8S_V1_19_VERSION" {default = "v1.19.11"}
+variable "K8S_V1_20_VERSION" {default = "v1.20.7"}
+variable "K8S_V1_21_VERSION" {default = "v1.21.2"}
+variable "K8S_V1_22_VERSION" {default = "v1.22.5"}
 
 variable "ALPINE_IMAGE" {default = "docker.io/library/alpine:${ALPINE_VERSION}"}
 variable "KPT_IMAGE" {default = "ghcr.io/bzub/images/kpt:${KPT_VERSION}"}
@@ -23,6 +27,7 @@ group "default" {
     "kpt",
     "kind",
     "clusterctl",
+    "kind-node",
   ]
 }
 
@@ -115,5 +120,66 @@ target "clusterctl-v1.1" {
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V1_1_VERSION}",
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:v1.1",
+  ]
+}
+
+group "kind-node" {
+  targets = [
+    "kind-node-v1_19",
+    "kind-node-v1_20",
+    "kind-node-v1_21",
+    "kind-node-v1_22",
+  ]
+}
+
+target "_kind-node-common" {
+  target = "kind-node"
+  platforms = [
+    "linux/amd64",
+    "linux/arm64",
+  ]
+}
+
+target "kind-node-v1_19" {
+  inherits = ["_common", "_kind-node-common"]
+  args = {
+    KIND_NODE_VERSION = K8S_V1_19_VERSION
+  }
+  tags = [
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_19_VERSION}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.19",
+  ]
+}
+
+target "kind-node-v1_20" {
+  inherits = ["_common", "_kind-node-common"]
+  args = {
+    KIND_NODE_VERSION = K8S_V1_20_VERSION
+  }
+  tags = [
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_20_VERSION}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.20",
+  ]
+}
+
+target "kind-node-v1_21" {
+  inherits = ["_common", "_kind-node-common"]
+  args = {
+    KIND_NODE_VERSION = K8S_V1_21_VERSION
+  }
+  tags = [
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_21_VERSION}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.21",
+  ]
+}
+
+target "kind-node-v1_22" {
+  inherits = ["_common", "_kind-node-common"]
+  args = {
+    KIND_NODE_VERSION = K8S_V1_22_VERSION
+  }
+  tags = [
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_22_VERSION}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.22",
   ]
 }

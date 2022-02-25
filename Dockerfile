@@ -1,6 +1,7 @@
 # syntax = docker.io/docker/dockerfile:1.3.1@sha256:42399d4635eddd7a9b8a24be879d2f9a930d0ed040a61324cfdf59ef1357b3b2
 
 ARG ALPINE_IMAGE
+ARG KIND_NODE_VERSION
 
 FROM --platform=linux $ALPINE_IMAGE as builder
 RUN apk add -U --no-cache git curl bash go build-base
@@ -70,3 +71,11 @@ RUN chmod +x /usr/local/bin/clusterctl-${GOOS}-${GOARCH}
 FROM base-image as clusterctl
 COPY --from=clusterctl-build /usr/local/bin/clusterctl-${TARGETOS}-${TARGETARCH} /clusterctl
 ENTRYPOINT ["/clusterctl"]
+
+# kind-node images with backported fixes for use with Colima.
+FROM docker.io/kindest/node:${KIND_NODE_VERSION} as kind-node
+COPY --from=docker.io/kindest/node:v1.23.3 /etc/systemd/system/kubelet.service.d/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+ARG USERNAME
+ARG REPO_NAME
+LABEL org.opencontainers.image.source https://github.com/${USERNAME}/${REPO_NAME}
+LABEL org.opencontainers.image.url https://github.com/${USERNAME}/${REPO_NAME}
