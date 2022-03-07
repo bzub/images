@@ -15,11 +15,13 @@ variable "K8S_V1_20_VERSION" {default = "v1.20.7"}
 variable "K8S_V1_21_VERSION" {default = "v1.21.2"}
 variable "K8S_V1_22_VERSION" {default = "v1.22.5"}
 variable "KIND_NODE_VERSION" {default = K8S_V1_19_VERSION}
-variable "REDDFISHTOOL_VERSION" {default = "1.1.5"}
+variable "REDFISHTOOL_VERSION" {default = "1.1.5"}
+variable "TRIVY_VERSION" {default = "0.24.2"}
 
 variable "ALPINE_IMAGE" {default = "docker.io/library/alpine:${ALPINE_VERSION}"}
 variable "PYTHON_IMAGE" {default = "docker.io/library/python:${PYTHON_VERSION}"}
 variable "KIND_NODE_UPSTREAM_IMAGE" {default = "docker.io/kindest/node"}
+variable "TRIVY_UPSTREAM_IMAGE" {default = "ghcr.io/aquasecurity/trivy"}
 
 function "majorminorversion" {
   params = [semver]
@@ -50,6 +52,8 @@ target "_common" {
   args = {
     ALPINE_IMAGE = ALPINE_IMAGE
     PYTHON_IMAGE = PYTHON_IMAGE
+    KIND_NODE_UPSTREAM_IMAGE = KIND_NODE_UPSTREAM_IMAGE
+    TRIVY_UPSTREAM_IMAGE = TRIVY_UPSTREAM_IMAGE
     REGISTRY = REGISTRY
     USERNAME = USERNAME
     REPO_NAME = REPO_NAME
@@ -204,10 +208,24 @@ target "redfishtool" {
   target = "redfishtool"
   inherits = ["_common"]
   args = {
-    REDDFISHTOOL_VERSION = REDDFISHTOOL_VERSION
+    REDFISHTOOL_VERSION = REDFISHTOOL_VERSION
   }
   tags = [
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/redfishtool:${REDDFISHTOOL_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/redfishtool:${majorminorversion(REDDFISHTOOL_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/redfishtool:${REDFISHTOOL_VERSION}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/redfishtool:${majorminorversion(REDFISHTOOL_VERSION)}",
   ]
+  platforms = ["linux/amd64"]
+}
+
+target "trivy" {
+  target = "trivy"
+  inherits = ["_common"]
+  args = {
+    TRIVY_UPSTREAM_IMAGE = "${TRIVY_UPSTREAM_IMAGE}:${TRIVY_VERSION}"
+  }
+  tags = [
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/trivy:${TRIVY_VERSION}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/trivy:${majorminorversion(TRIVY_VERSION)}",
+  ]
+  platforms = ["linux/amd64"]
 }
