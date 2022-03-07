@@ -3,10 +3,12 @@
 ARG ALPINE_IMAGE
 ARG PYTHON_IMAGE
 ARG KIND_NODE_UPSTREAM_IMAGE
+ARG TRIVY_UPSTREAM_IMAGE
 
 FROM ${ALPINE_IMAGE} as alpine
 FROM ${KIND_NODE_UPSTREAM_IMAGE} as kind-node-upstream
 FROM ${PYTHON_IMAGE} as python
+FROM $TRIVY_UPSTREAM_IMAGE as trivy-upstream
 
 FROM --platform=linux alpine as builder
 RUN apk add -U --no-cache git curl bash go build-base
@@ -89,8 +91,15 @@ LABEL org.opencontainers.image.url https://github.com/${USERNAME}/${REPO_NAME}
 FROM python as redfishtool
 ARG USERNAME
 ARG REPO_NAME
-ARG REDDFISHTOOL_VERSION
-RUN pip install "redfishtool==1.1.5"
+ARG REDFISHTOOL_VERSION
+RUN pip install "redfishtool==${REDFISHTOOL_VERSION}"
 ENTRYPOINT ["redfishtool"]
+LABEL org.opencontainers.image.source https://github.com/${USERNAME}/${REPO_NAME}
+LABEL org.opencontainers.image.url https://github.com/${USERNAME}/${REPO_NAME}
+
+FROM trivy-upstream as trivy
+ARG USERNAME
+ARG REPO_NAME
+RUN apk add -U --no-cache jq
 LABEL org.opencontainers.image.source https://github.com/${USERNAME}/${REPO_NAME}
 LABEL org.opencontainers.image.url https://github.com/${USERNAME}/${REPO_NAME}
