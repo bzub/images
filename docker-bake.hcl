@@ -95,7 +95,7 @@ target "clusterctl-v0_3" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V0_3_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V0_3_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${majorminorversion(CAPI_V0_3_VERSION)}",
   ]
 }
 
@@ -107,7 +107,7 @@ target "clusterctl-v0_4" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V0_4_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V0_4_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${majorminorversion(CAPI_V0_4_VERSION)}",
   ]
 }
 
@@ -119,7 +119,7 @@ target "clusterctl-v1_0" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V1_0_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V1_0_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${majorminorversion(CAPI_V1_0_VERSION)}",
   ]
 }
 
@@ -131,7 +131,7 @@ target "clusterctl-v1_1" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V1_1_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V1_1_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${majorminorversion(CAPI_V1_1_VERSION)}",
   ]
 }
 
@@ -159,7 +159,7 @@ target "kind-node-v1_19" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_19_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_19_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${majorminorversion(K8S_V1_19_VERSION)}",
   ]
 }
 
@@ -170,7 +170,7 @@ target "kind-node-v1_20" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_20_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_20_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${majorminorversion(K8S_V1_20_VERSION)}",
   ]
 }
 
@@ -181,7 +181,7 @@ target "kind-node-v1_21" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_21_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_21_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${majorminorversion(K8S_V1_21_VERSION)}",
   ]
 }
 
@@ -192,6 +192,6 @@ target "kind-node-v1_22" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_22_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_22_VERSION)}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${majorminorversion(K8S_V1_22_VERSION)}",
   ]
 }
