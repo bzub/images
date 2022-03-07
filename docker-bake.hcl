@@ -68,14 +68,14 @@ target "kind" {
 
 group "clusterctl" {
   targets = [
-    "clusterctl-v0.3",
-    "clusterctl-v0.4",
-    "clusterctl-v1.0",
-    "clusterctl-v1.1",
+    "clusterctl-v0_3",
+    "clusterctl-v0_4",
+    "clusterctl-v1_0",
+    "clusterctl-v1_1",
   ]
 }
 
-target "clusterctl-v0.3" {
+target "clusterctl-v0_3" {
   inherits = ["_common"]
   target = "clusterctl"
   args = {
@@ -87,7 +87,7 @@ target "clusterctl-v0.3" {
   ]
 }
 
-target "clusterctl-v0.4" {
+target "clusterctl-v0_4" {
   inherits = ["_common"]
   target = "clusterctl"
   args = {
@@ -99,7 +99,7 @@ target "clusterctl-v0.4" {
   ]
 }
 
-target "clusterctl-v1.0" {
+target "clusterctl-v1_0" {
   inherits = ["_common"]
   target = "clusterctl"
   args = {
@@ -111,7 +111,7 @@ target "clusterctl-v1.0" {
   ]
 }
 
-target "clusterctl-v1.1" {
+target "clusterctl-v1_1" {
   inherits = ["_common"]
   target = "clusterctl"
   args = {
