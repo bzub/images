@@ -1,9 +1,12 @@
 # syntax = docker.io/docker/dockerfile:1.3.1@sha256:42399d4635eddd7a9b8a24be879d2f9a930d0ed040a61324cfdf59ef1357b3b2
 
 ARG ALPINE_IMAGE
-ARG KIND_NODE_VERSION
+ARG KIND_NODE_UPSTREAM_IMAGE
 
-FROM --platform=linux $ALPINE_IMAGE as builder
+FROM ${ALPINE_IMAGE} as alpine
+FROM ${KIND_NODE_UPSTREAM_IMAGE} as kind-node-upstream
+
+FROM --platform=linux alpine as builder
 RUN apk add -U --no-cache git curl bash go build-base
 ARG CGO_ENABLED=0
 ENV CGO_ENABLED="${CGO_ENABLED}"
@@ -73,7 +76,7 @@ COPY --from=clusterctl-build /usr/local/bin/clusterctl-${TARGETOS}-${TARGETARCH}
 ENTRYPOINT ["/clusterctl"]
 
 # kind-node images with backported fixes for use with Colima.
-FROM docker.io/kindest/node:${KIND_NODE_VERSION} as kind-node
+FROM kind-node-upstream as kind-node
 COPY --from=docker.io/kindest/node:v1.23.3 /etc/systemd/system/kubelet.service.d/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 ARG USERNAME
 ARG REPO_NAME
