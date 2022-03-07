@@ -3,6 +3,7 @@ variable "USERNAME" {default = "bzub"}
 variable "REPO_NAME" {default = "images"}
 
 variable "ALPINE_VERSION" {default = "3.15.0"}
+variable "PYTHON_VERSION" {default = "3.10.2"}
 variable "KPT_VERSION" {default = "v1.0.0-beta.13"}
 variable "KIND_VERSION" {default = "v0.11.1"}
 variable "CAPI_V0_3_VERSION" {default = "v0.3.25"}
@@ -14,8 +15,10 @@ variable "K8S_V1_20_VERSION" {default = "v1.20.7"}
 variable "K8S_V1_21_VERSION" {default = "v1.21.2"}
 variable "K8S_V1_22_VERSION" {default = "v1.22.5"}
 variable "KIND_NODE_VERSION" {default = K8S_V1_19_VERSION}
+variable "REDDFISHTOOL_VERSION" {default = "1.1.5"}
 
 variable "ALPINE_IMAGE" {default = "docker.io/library/alpine:${ALPINE_VERSION}"}
+variable "PYTHON_IMAGE" {default = "docker.io/library/python:${PYTHON_VERSION}"}
 variable "KIND_NODE_UPSTREAM_IMAGE" {default = "docker.io/kindest/node"}
 
 function "majorminorversion" {
@@ -46,6 +49,7 @@ group "default" {
 target "_common" {
   args = {
     ALPINE_IMAGE = ALPINE_IMAGE
+    PYTHON_IMAGE = PYTHON_IMAGE
     REGISTRY = REGISTRY
     USERNAME = USERNAME
     REPO_NAME = REPO_NAME
@@ -193,5 +197,17 @@ target "kind-node-v1_22" {
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_22_VERSION}",
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${majorminorversion(K8S_V1_22_VERSION)}",
+  ]
+}
+
+target "redfishtool" {
+  target = "redfishtool"
+  inherits = ["_common"]
+  args = {
+    REDDFISHTOOL_VERSION = REDDFISHTOOL_VERSION
+  }
+  tags = [
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/redfishtool:${REDDFISHTOOL_VERSION}",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/redfishtool:${majorminorversion(REDDFISHTOOL_VERSION)}",
   ]
 }
