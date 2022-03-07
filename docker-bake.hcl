@@ -13,14 +13,26 @@ variable "K8S_V1_19_VERSION" {default = "v1.19.11"}
 variable "K8S_V1_20_VERSION" {default = "v1.20.7"}
 variable "K8S_V1_21_VERSION" {default = "v1.21.2"}
 variable "K8S_V1_22_VERSION" {default = "v1.22.5"}
+variable "KIND_NODE_VERSION" {default = K8S_V1_19_VERSION}
 
 variable "ALPINE_IMAGE" {default = "docker.io/library/alpine:${ALPINE_VERSION}"}
-variable "KPT_IMAGE" {default = "ghcr.io/bzub/images/kpt:${KPT_VERSION}"}
-variable "KIND_IMAGE" {default = "ghcr.io/bzub/images/kind:${KIND_VERSION}"}
-variable "CLUSTERCTL_V0_3_IMAGE" {default = "ghcr.io/bzub/images/clusterctl:${CAPI_V0_3_VERSION}"}
-variable "CLUSTERCTL_V0_4_IMAGE" {default = "ghcr.io/bzub/images/clusterctl:${CAPI_V0_4_VERSION}"}
-variable "CLUSTERCTL_V1_0_IMAGE" {default = "ghcr.io/bzub/images/clusterctl:${CAPI_V1_0_VERSION}"}
-variable "CLUSTERCTL_V1_1_IMAGE" {default = "ghcr.io/bzub/images/clusterctl:${CAPI_V1_1_VERSION}"}
+variable "KIND_NODE_UPSTREAM_IMAGE" {default = "docker.io/kindest/node"}
+
+function "majorminorversion" {
+  params = [semver]
+  result = format("%s.%s",
+    lookup(
+      regex("^(?P<major>v?\\d*)\\.(?P<minor>\\d*)\\.(?P<patch>\\d*).*$", semver),
+      "major",
+      "error-major_version_not_found"
+    ),
+    lookup(
+      regex("^(?P<major>v?\\d*)\\.(?P<minor>\\d*)\\.(?P<patch>\\d*).*$", semver),
+      "minor",
+      "error-minor_version_not_found"
+    )
+  )
+}
 
 group "default" {
   targets = [
@@ -83,7 +95,7 @@ target "clusterctl-v0_3" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V0_3_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:v0.3",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V0_3_VERSION)}",
   ]
 }
 
@@ -95,7 +107,7 @@ target "clusterctl-v0_4" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V0_4_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:v0.4",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V0_4_VERSION)}",
   ]
 }
 
@@ -107,7 +119,7 @@ target "clusterctl-v1_0" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V1_0_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:v1.0",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V1_0_VERSION)}",
   ]
 }
 
@@ -119,7 +131,7 @@ target "clusterctl-v1_1" {
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:${CAPI_V1_1_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl:v1.1",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/clusterctl${majorminorversion(CAPI_V1_1_VERSION)}",
   ]
 }
 
@@ -143,43 +155,43 @@ target "_kind-node-common" {
 target "kind-node-v1_19" {
   inherits = ["_common", "_kind-node-common"]
   args = {
-    KIND_NODE_VERSION = K8S_V1_19_VERSION
+    KIND_NODE_UPSTREAM_IMAGE = "${KIND_NODE_UPSTREAM_IMAGE}:${K8S_V1_19_VERSION}"
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_19_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.19",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_19_VERSION)}",
   ]
 }
 
 target "kind-node-v1_20" {
   inherits = ["_common", "_kind-node-common"]
   args = {
-    KIND_NODE_VERSION = K8S_V1_20_VERSION
+    KIND_NODE_UPSTREAM_IMAGE = "${KIND_NODE_UPSTREAM_IMAGE}:${K8S_V1_20_VERSION}"
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_20_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.20",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_20_VERSION)}",
   ]
 }
 
 target "kind-node-v1_21" {
   inherits = ["_common", "_kind-node-common"]
   args = {
-    KIND_NODE_VERSION = K8S_V1_21_VERSION
+    KIND_NODE_UPSTREAM_IMAGE = "${KIND_NODE_UPSTREAM_IMAGE}:${K8S_V1_21_VERSION}"
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_21_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.21",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_21_VERSION)}",
   ]
 }
 
 target "kind-node-v1_22" {
   inherits = ["_common", "_kind-node-common"]
   args = {
-    KIND_NODE_VERSION = K8S_V1_22_VERSION
+    KIND_NODE_UPSTREAM_IMAGE = "${KIND_NODE_UPSTREAM_IMAGE}:${K8S_V1_22_VERSION}"
   }
   tags = [
     "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:${K8S_V1_22_VERSION}",
-    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node:v1.22",
+    "${REGISTRY}/${USERNAME}/${REPO_NAME}/kind-node${majorminorversion(K8S_V1_22_VERSION)}",
   ]
 }
